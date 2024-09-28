@@ -1,0 +1,57 @@
+#This creates a K8s service
+
+#This sits in front of our pods and is how we expose our service to consumers
+#We direct requests to this service, and let K8s distribute the load to one of its pods
+
+apiVersion: v1 # versioning tag for our service (should match the deployment we route to)
+
+kind: Service
+metadata:
+  name: hello-app-service
+spec:
+  type: NodePort # a port type that is opened for every node on the cluster
+  selector:
+    app: hello-app # we select pods labelled with "hello-app" (from our deployment)
+  ports:
+    - port: 8080 # the port on which this service is available on
+      targetPort: 8080 # the port the pods are listening on (from our deployment)
+      nodePort: 30080 # we expose this port to
+
+#1. Containers:
+#   - The smallest unit in this hierarchy.
+#   - Contain the application and its dependencies.
+#   - Isolated, lightweight environments for running applications.
+#
+#2. Pods:
+#   - The smallest deployable unit in Kubernetes.
+#   - Usually contain one main container, but can have multiple containers.
+#   - All containers in a pod share the same network namespace and can communicate easily.
+#
+#3. Nodes:
+#   - Physical or virtual machines that make up the Kubernetes cluster.
+#   - Each node runs a container runtime (like Docker) and the Kubernetes node components.
+#   - Nodes host and run pods.
+#
+#4. Clusters:
+#   - A set of nodes that run containerized applications managed by Kubernetes.
+#   - Consists of at least one master node and multiple worker nodes.
+#
+#Hierarchy and Interaction:
+#
+#1. Cluster Level:
+#   - The cluster is the highest level of abstraction.
+#   - It encompasses all the nodes and the Kubernetes control plane.
+#
+#2. Node Level:
+#   - Nodes are part of the cluster.
+#   - Each node can run multiple pods.
+#   - Nodes provide the computing resources (CPU, memory, storage) for pods.
+#
+#3. Pod Level:
+#   - Pods are scheduled onto nodes.
+#   - A pod can be moved from one node to another if needed.
+#   - Pods abstract away the specifics of the underlying node.
+#
+#4. Container Level:
+#   - Containers run inside pods.
+#   - They are the actual application instances.

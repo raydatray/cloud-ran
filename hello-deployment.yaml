@@ -1,0 +1,24 @@
+#This creates a K8s deployment
+
+#Each pod gets a unique IP, which sits behind a service deployment that will direct to pod-ip-address:8080
+
+apiVersion: apps/v1 # versioning tag for our deployment
+
+kind: Deployment
+metadata:
+  name: hello-app
+spec:
+  replicas: 1 # num of pod replicas to maintain
+  selector:
+    matchLabels: # we manage only pods with name hello-app
+      app: hello-app
+  template: # template to create new pods off
+    metadata:
+      labels:
+        app: hello-app
+    spec:
+      containers: # containers in the pod (we have one, but we could have multiple)
+        - name: hello-app
+          image: gcr.io/google-samples/hello-app:2.0 # docker image to spin up the pod from
+          ports: # ports to expose (we have one)
+            - containerPort: 8080 # expose port 8080 of this container
