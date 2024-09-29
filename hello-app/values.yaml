@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: gcr.io/google-samples/hello-app
+  tag: "2.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8080
+  nodePort: 30080
